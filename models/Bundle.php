@@ -10,6 +10,8 @@
 namespace chd7well\sales\models;
 
 use Yii;
+use yii\helpers\ArrayHelper;
+use chd7well\master\models\Unit;
 
 /**
  * This is the model class for table "{{%sales_bundle}}".
@@ -67,7 +69,7 @@ class Bundle extends \yii\db\ActiveRecord
      */
     public function getItemUnit()
     {
-        return $this->hasOne(MasterUnit::className(), ['ID' => 'item_unit_ID']);
+        return $this->hasOne(Unit::className(), ['ID' => 'item_unit_ID']);
     }
 
     /**
@@ -75,7 +77,7 @@ class Bundle extends \yii\db\ActiveRecord
      */
     public function getBundleUnit()
     {
-        return $this->hasOne(MasterUnit::className(), ['ID' => 'bundle_unit_ID']);
+        return $this->hasOne(Unit::className(), ['ID' => 'bundle_unit_ID']);
     }
 
     /**
@@ -84,5 +86,17 @@ class Bundle extends \yii\db\ActiveRecord
     public function getSalesProductBundles()
     {
         return $this->hasMany(SalesProductBundle::className(), ['bundle_ID' => 'ID']);
+    }
+    
+    public function getUnitList()
+    {
+    	$models = Unit::find()->asArray()->all();
+    	return ArrayHelper::map($models, 'ID', 'unit');
+    }
+    
+    public function getBundleList()
+    {
+    	$models = Bundle::find()->asArray()->all();
+    	return ArrayHelper::map($models, 'ID', 'bundle_name');
     }
 }

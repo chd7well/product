@@ -40,7 +40,7 @@ class Productretailprice extends \yii\db\ActiveRecord
         return [
             [['product_ID'], 'required'],
             [['product_ID'], 'integer'],
-            [['fromedate'], 'safe'],
+            [['fromdate'], 'safe'],
             [['retailprice'], 'number']
         ];
     }
@@ -53,7 +53,7 @@ class Productretailprice extends \yii\db\ActiveRecord
         return [
             'ID' => Yii::t('sales', 'ID'),
             'product_ID' => Yii::t('sales', 'Product  ID'),
-            'fromedate' => Yii::t('sales', 'Fromedate'),
+            'fromdate' => Yii::t('sales', 'Fromdate'),
             'retailprice' => Yii::t('sales', 'Retailprice'),
         ];
     }

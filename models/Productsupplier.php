@@ -10,7 +10,7 @@
 namespace chd7well\sales\models;
 
 use Yii;
-
+use yii\helpers\ArrayHelper;
 /**
  * This is the model class for table "{{%sales_product_supplier}}".
  *
@@ -85,4 +85,15 @@ class Productsupplier extends \yii\db\ActiveRecord
     {
         return $this->hasOne(SalesProduct::className(), ['ID' => 'product_ID']);
     }
+    
+    public function getSupplierList()
+    {
+    
+    	$models = Supplier::find()->where([
+    			'is_supplier'=>true,
+    			'active'=>true
+    	])->asArray()->all();
+    	return ArrayHelper::map($models, 'ID', 'partnername');
+    }
+    
 }

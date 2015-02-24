@@ -4,11 +4,11 @@ use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
 /* @var $this yii\web\View */
-/* @var $model chd7well\sales\models\ProductgrpSearch */
+/* @var $model chd7well\sales\models\ProductpurchasepriceSearch */
 /* @var $form yii\widgets\ActiveForm */
 ?>
 
-<div class="productgrp-search">
+<div class="productpurchaseprice-search">
 
     <?php $form = ActiveForm::begin([
         'action' => ['index'],
@@ -17,9 +17,15 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'ID') ?>
 
-    <?= $form->field($model, 'groupname') ?>
+    <?= $form->field($model, 'purchase_ID') ?>
 
-    <?= $form->field($model, 'margin') ?>
+    <?= $form->field($model, 'fromdate') ?>
+
+     <?= $form->field($model, 'purchaseprice') ?>
+     
+    <?= $form->field($model, 'suggested_retailprice') ?>
+
+    <?= $form->field($model, 'comment') ?>
 
     <div class="form-group">
         <?= Html::submitButton(Yii::t('sales', 'Search'), ['class' => 'btn btn-primary']) ?>

@@ -2,28 +2,26 @@
 
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
-use kartik\money\MaskMoney;
 
 /* @var $this yii\web\View */
-/* @var $model chd7well\sales\models\Productgrp */
+/* @var $model chd7well\sales\models\Bundle */
 /* @var $form yii\widgets\ActiveForm */
 ?>
 
-<div class="productgrp-form">
+<div class="bundle-form">
 
     <?php $form = ActiveForm::begin(); ?>
 
-    <?= $form->field($model, 'groupname')->textInput(['maxlength' => 255]) ?>
-<?php $model->margin *= 100;?>
-    <?= $form->field($model, 'margin')->widget(MaskMoney::classname(), [
-'pluginOptions' => [
-'prefix' => '',
-'suffix' => ' %',
-'allowNegative' => false,
-'decimal' => '.',
-'precision' => 2,
-]
-]);?>
+    <?= $form->field($model, 'bundle_name')->textInput(['maxlength' => 255]) ?>
+
+
+     <?= $form->field($model, 'bundle_unit_ID')->dropDownList($model->UnitList) ?>
+
+
+    <?= $form->field($model, 'item_unit_ID')->dropDownList($model->UnitList) ?>
+    
+    <?= $form->field($model, 'item_count')->textInput() ?>
+
     <div class="form-group">
         <?= Html::submitButton($model->isNewRecord ? Yii::t('sales', 'Create') : Yii::t('sales', 'Update'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
     </div>

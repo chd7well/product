@@ -42,7 +42,7 @@ class Productpurchaseprice extends \yii\db\ActiveRecord
             [['purchase_ID'], 'required'],
             [['purchase_ID'], 'integer'],
             [['fromdate'], 'safe'],
-            [['suggested_retailprice'], 'number'],
+            [['suggested_retailprice', 'purchaseprice'], 'number'],
             [['comment'], 'string', 'max' => 255]
         ];
     }
@@ -57,6 +57,7 @@ class Productpurchaseprice extends \yii\db\ActiveRecord
             'purchase_ID' => Yii::t('sales', 'Purchase  ID'),
             'fromdate' => Yii::t('sales', 'Fromdate'),
             'suggested_retailprice' => Yii::t('sales', 'Suggested Retailprice'),
+        	'purchaseprice' => Yii::t('sales', 'Purchaseprice'),
             'comment' => Yii::t('sales', 'Comment'),
         ];
     }

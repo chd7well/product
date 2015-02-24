@@ -10,6 +10,9 @@
 namespace chd7well\sales\models;
 
 use Yii;
+use chd7well\master\models\Unit;
+use yii\helpers\ArrayHelper;
+
 
 /**
  * This is the model class for table "{{%sales_product}}".
@@ -30,6 +33,7 @@ use Yii;
  */
 class Product extends \yii\db\ActiveRecord
 {
+	public $genitemnumber;
     /**
      * @inheritdoc
      */
@@ -44,12 +48,13 @@ class Product extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['productname', 'itemnumber', 'GS1GTIN'], 'required'],
+            [['productname', 'itemnumber'], 'required'],
             [['description'], 'string'],
             [['unit_ID', 'productgrp_ID'], 'integer'],
             [['productname'], 'string', 'max' => 255],
             [['itemnumber'], 'string', 'max' => 50],
-            [['GS1GTIN'], 'string', 'max' => 128]
+            [['GS1GTIN'], 'string', 'max' => 128],
+        	[['itemnumber'], 'unique']
         ];
     }
 
@@ -60,12 +65,12 @@ class Product extends \yii\db\ActiveRecord
     {
         return [
             'ID' => Yii::t('sales', 'ID'),
-            'productname' => Yii::t('sales', 'Productname'),
+            'productname' => Yii::t('sales', 'Product Name'),
             'description' => Yii::t('sales', 'Description'),
-            'itemnumber' => Yii::t('sales', 'Itemnumber'),
-            'GS1GTIN' => Yii::t('sales', 'Gs1 Gtin'),
+            'itemnumber' => Yii::t('sales', 'Item Number (automatic number, change only if necessary)'),
+            'GS1GTIN' => Yii::t('sales', 'GS1/EAN Number'),
             'unit_ID' => Yii::t('sales', 'Unit  ID'),
-            'productgrp_ID' => Yii::t('sales', 'Productgrp  ID'),
+            'productgrp_ID' => Yii::t('sales', 'Product Group'),
         ];
     }
 
@@ -74,15 +79,23 @@ class Product extends \yii\db\ActiveRecord
      */
     public function getProductgrp()
     {
-        return $this->hasOne(SalesProductgrp::className(), ['ID' => 'productgrp_ID']);
+        return $this->hasOne(Productgrp::className(), ['ID' => 'productgrp_ID']);
     }
 
     /**
      * @return \yii\db\ActiveQuery
      */
+    public function getUnit()
+    {
+    	return $this->hasOne(Unit::className(), ['ID' => 'unit_ID']);
+    }
+    
+    /**
+     * @return \yii\db\ActiveQuery
+     */
     public function getSalesProductBundles()
     {
-        return $this->hasMany(SalesProductBundle::className(), ['product_ID' => 'ID']);
+        return $this->hasMany(ProductBundle::className(), ['product_ID' => 'ID']);
     }
 
     /**
@@ -90,7 +103,7 @@ class Product extends \yii\db\ActiveRecord
      */
     public function getSalesProductRetailPrices()
     {
-        return $this->hasMany(SalesProductRetailPrice::className(), ['product_ID' => 'ID']);
+        return $this->hasMany(ProductRetailPrice::className(), ['product_ID' => 'ID']);
     }
 
     /**
@@ -98,6 +111,20 @@ class Product extends \yii\db\ActiveRecord
      */
     public function getSalesProductSuppliers()
     {
-        return $this->hasMany(SalesProductSupplier::className(), ['product_ID' => 'ID']);
+        return $this->hasMany(ProductSupplier::className(), ['product_ID' => 'ID']);
     }
+    
+    public function getUnitList()
+    {
+    	$models = Unit::find()->asArray()->all();
+    	return ArrayHelper::map($models, 'ID', 'unit');
+    }
+    
+    public function getProductgrpList()
+    {
+    	$models = Productgrp::find()->asArray()->all();
+    	return ArrayHelper::map($models, 'ID', 'groupname');
+    }
+    
+    
 }

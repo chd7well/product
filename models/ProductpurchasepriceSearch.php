@@ -5,12 +5,12 @@ namespace chd7well\sales\models;
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use chd7well\sales\models\Productgrp;
+use chd7well\sales\models\Productpurchaseprice;
 
 /**
- * ProductgrpSearch represents the model behind the search form about `vendor\chd7well\sales\models\Productgrp`.
+ * ProductpurchasepriceSearch represents the model behind the search form about `chd7well\sales\models\Productpurchaseprice`.
  */
-class ProductgrpSearch extends Productgrp
+class ProductpurchasepriceSearch extends Productpurchaseprice
 {
     /**
      * @inheritdoc
@@ -18,9 +18,9 @@ class ProductgrpSearch extends Productgrp
     public function rules()
     {
         return [
-            [['ID'], 'integer'],
-            [['groupname'], 'safe'],
-            [['margin'], 'number'],
+            [['ID', 'purchase_ID'], 'integer'],
+            [['fromdate', 'comment'], 'safe'],
+            [['suggested_retailprice'], 'number'],
         ];
     }
 
@@ -42,7 +42,7 @@ class ProductgrpSearch extends Productgrp
      */
     public function search($params)
     {
-        $query = Productgrp::find();
+        $query = Productpurchaseprice::find();
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
@@ -58,10 +58,12 @@ class ProductgrpSearch extends Productgrp
 
         $query->andFilterWhere([
             'ID' => $this->ID,
-            'margin' => $this->margin,
+            'purchase_ID' => $this->purchase_ID,
+            'fromdate' => $this->fromdate,
+            'suggested_retailprice' => $this->suggested_retailprice,
         ]);
 
-        $query->andFilterWhere(['like', 'groupname', $this->groupname]);
+        $query->andFilterWhere(['like', 'comment', $this->comment]);
 
         return $dataProvider;
     }

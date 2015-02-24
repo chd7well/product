@@ -4,11 +4,11 @@ use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
 /* @var $this yii\web\View */
-/* @var $model chd7well\sales\models\ProductgrpSearch */
+/* @var $model chd7well\sales\models\BundleSearch */
 /* @var $form yii\widgets\ActiveForm */
 ?>
 
-<div class="productgrp-search">
+<div class="bundle-search">
 
     <?php $form = ActiveForm::begin([
         'action' => ['index'],
@@ -17,9 +17,13 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'ID') ?>
 
-    <?= $form->field($model, 'groupname') ?>
+    <?= $form->field($model, 'bundle_name') ?>
 
-    <?= $form->field($model, 'margin') ?>
+    <?= $form->field($model, 'bundle_unit_ID') ?>
+
+    <?= $form->field($model, 'item_unit_ID') ?>
+
+    <?= $form->field($model, 'item_count') ?>
 
     <div class="form-group">
         <?= Html::submitButton(Yii::t('sales', 'Search'), ['class' => 'btn btn-primary']) ?>

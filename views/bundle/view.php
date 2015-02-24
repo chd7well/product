@@ -2,15 +2,16 @@
 
 use yii\helpers\Html;
 use yii\widgets\DetailView;
+use chd7well\master\widgets\HistoryWidget;
 
 /* @var $this yii\web\View */
-/* @var $model chd7well\sales\models\Productgrp */
+/* @var $model chd7well\sales\models\Bundle */
 
-$this->title = $model->ID;
-$this->params['breadcrumbs'][] = ['label' => Yii::t('sales', 'Productgrps'), 'url' => ['index']];
+$this->title = Yii::t('sales', 'Bundle') . $model->bundle_name;
+$this->params['breadcrumbs'][] = ['label' => Yii::t('sales', 'Bundles'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="productgrp-view">
+<div class="bundle-view">
 
     <h1><?= Html::encode($this->title) ?></h1>
 
@@ -29,9 +30,16 @@ $this->params['breadcrumbs'][] = $this->title;
         'model' => $model,
         'attributes' => [
             'ID',
-            'groupname',
-            'margin',
+            'bundle_name',
+            'bundleUnit.unit',
+            'itemUnit.unit',
+            'item_count',
         ],
     ]) ?>
 
 </div>
+<?php 
+echo HistoryWidget::widget(['modelname' => $model->className(),
+							'model_ID' => $model->ID]);
+
+?>

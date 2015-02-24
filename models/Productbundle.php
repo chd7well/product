@@ -10,7 +10,7 @@
 namespace chd7well\sales\models;
 
 use Yii;
-
+use yii\helpers\ArrayHelper;
 /**
  * This is the model class for table "{{%sales_product_bundle}}".
  *
@@ -50,7 +50,7 @@ class Productbundle extends \yii\db\ActiveRecord
     {
         return [
             'ID' => Yii::t('sales', 'ID'),
-            'bundle_ID' => Yii::t('sales', 'Bundle  ID'),
+            'bundle_ID' => Yii::t('sales', 'Bundle Option'),
             'product_ID' => Yii::t('sales', 'Product  ID'),
         ];
     }
@@ -60,7 +60,7 @@ class Productbundle extends \yii\db\ActiveRecord
      */
     public function getBundle()
     {
-        return $this->hasOne(SalesBundle::className(), ['ID' => 'bundle_ID']);
+        return $this->hasOne(Bundle::className(), ['ID' => 'bundle_ID']);
     }
 
     /**
@@ -68,6 +68,24 @@ class Productbundle extends \yii\db\ActiveRecord
      */
     public function getProduct()
     {
-        return $this->hasOne(SalesProduct::className(), ['ID' => 'product_ID']);
+        return $this->hasOne(Product::className(), ['ID' => 'product_ID']);
+    }
+    
+    
+    public function getBundleList($withselecttext = false)
+    {
+    
+    	$models = Bundle::find()->asArray()->all();
+    	if($withselecttext)
+    	{
+    		$selectmodel = new Bundle();
+    		$selectmodel->ID = 0;
+    		$selectmodel->bundle_name = Yii::t('sales', '---Select---');
+    		$models[] = $selectmodel;
+    		return ArrayHelper::map($models, 'ID', 'bundle_name');
+    	}
+    	else {
+    		return ArrayHelper::map($models, 'ID', 'bundle_name');
+    	}
     }
 }

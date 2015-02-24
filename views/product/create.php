@@ -4,15 +4,15 @@ use yii\helpers\Html;
 
 
 /* @var $this yii\web\View */
-/* @var $model chd7well\sales\models\Productgrp */
+/* @var $model chd7well\sales\models\Product */
 
 $this->title = Yii::t('sales', 'Create {modelClass}', [
-    'modelClass' => 'Productgrp',
+    'modelClass' => 'Product',
 ]);
-$this->params['breadcrumbs'][] = ['label' => Yii::t('sales', 'Productgrps'), 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => Yii::t('sales', 'Products'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="productgrp-create">
+<div class="product-create">
 
     <h1><?= Html::encode($this->title) ?></h1>
 

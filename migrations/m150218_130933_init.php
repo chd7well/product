@@ -48,7 +48,7 @@ class m150218_130933_init extends Migration
     	$this->createTable('{{%sales_product_retail_price}}', [
     			'ID'                   => Schema::TYPE_PK,
     			'product_ID' 	       => Schema::TYPE_INTEGER . ' NOT NULL',
-    			'fromedate'          => Schema::TYPE_DATE,
+    			'fromdate'          => Schema::TYPE_DATE,
     			'retailprice'		   => Schema::TYPE_FLOAT,
     	]);
     	

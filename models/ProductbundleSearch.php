@@ -5,12 +5,12 @@ namespace chd7well\sales\models;
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use chd7well\sales\models\Productgrp;
+use chd7well\sales\models\Productbundle;
 
 /**
- * ProductgrpSearch represents the model behind the search form about `vendor\chd7well\sales\models\Productgrp`.
+ * ProductbundleSearch represents the model behind the search form about `chd7well\sales\models\Productbundle`.
  */
-class ProductgrpSearch extends Productgrp
+class ProductbundleSearch extends Productbundle
 {
     /**
      * @inheritdoc
@@ -18,9 +18,7 @@ class ProductgrpSearch extends Productgrp
     public function rules()
     {
         return [
-            [['ID'], 'integer'],
-            [['groupname'], 'safe'],
-            [['margin'], 'number'],
+            [['ID', 'bundle_ID', 'product_ID'], 'integer'],
         ];
     }
 
@@ -42,7 +40,7 @@ class ProductgrpSearch extends Productgrp
      */
     public function search($params)
     {
-        $query = Productgrp::find();
+        $query = Productbundle::find();
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
@@ -58,10 +56,9 @@ class ProductgrpSearch extends Productgrp
 
         $query->andFilterWhere([
             'ID' => $this->ID,
-            'margin' => $this->margin,
+            'bundle_ID' => $this->bundle_ID,
+            'product_ID' => $this->product_ID,
         ]);
-
-        $query->andFilterWhere(['like', 'groupname', $this->groupname]);
 
         return $dataProvider;
     }
