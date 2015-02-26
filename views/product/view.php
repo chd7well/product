@@ -9,6 +9,8 @@ use chd7well\master\models\Unit;
 use chd7well\sales\models\Bundle;
 use yii\widgets\ActiveForm;
 use chd7well\master\widgets\HistoryWidget;
+use chd7well\sales\models\Productpurchaseprice;
+use yii\data\ActiveDataProvider;
 /* @var $this yii\web\View */
 /* @var $model chd7well\sales\models\Product */
 
@@ -21,28 +23,10 @@ $this->params['breadcrumbs'][] = $this->title;
 	<h1><?= Html::encode($this->title) ?></h1>
 
 	<p>
-        <?php /*echo Html::a(Yii::t('sales', 'Update'), ['update', 'id' => $model->ID], ['class' => 'btn btn-primary']) 
-        echo Html::a(Yii::t('sales', 'Delete'), ['delete', 'id' => $model->ID], [
-            'class' => 'btn btn-danger',
-            'data' => [
-                'confirm' => Yii::t('sales', 'Are you sure you want to delete this item?'),
-                'method' => 'post',
-            ],
-        ]) */?>
+        <?php ?>
     </p>
 
-    <?php /*echo DetailView::widget([
-        'model' => $model,
-        'attributes' => [
-            'ID',
-            'productname',
-            'description:ntext',
-            'itemnumber',
-            'GS1GTIN',
-            'unit_ID',
-            'productgrp_ID',
-        ],
-    ]); */
+    <?php 
 
         echo DetailView::widget ( [ 
 						'model' => $model,
@@ -99,6 +83,67 @@ $this->params['breadcrumbs'][] = $this->title;
         		 
 				] );
         ?>
+                <?= GridView::widget([
+        'dataProvider' => $suppliers,
+        'panel' => [
+        		'type' => GridView::TYPE_PRIMARY,
+        		'heading' => Yii::t('sales', 'Suppliers'),
+        ],
+        'toolbar' => [
+        		['content'=>
+        				Html::a('<i class="glyphicon glyphicon-plus"></i>', ['productsupplier/add', 'id' => $model->ID], ['data-pjax'=>0, 'class' => 'btn btn-success', 'title'=>Yii::t('sales', 'New retail price')]),
+        		],
+        		//'{export}',
+        		//'{toggleData}',
+        ],
+        'columns' => [
+            ['class' => 'yii\grid\SerialColumn'],
+            [
+            'class'=>'kartik\grid\ExpandRowColumn',
+            'width'=>'50px',
+            'value'=>function ($model, $key, $index, $column) {
+            	return GridView::ROW_COLLAPSED;
+            },
+            'detail'=>function ($model, $key, $index, $column) {
+		            $query = Productpurchaseprice::find();
+		            $query->andFilterWhere(['purchase_ID'=>$model->ID])->orderBy(['fromdate' => SORT_DESC, 'ID'=> SORT_DESC]);
+		            $dataProvider = new ActiveDataProvider([
+		            		'query' => $query,
+		            ]);
+
+            	return Yii::$app->controller->renderPartial('../productsupplier/expand_details', ['dataProvider'=>$dataProvider, 'purchaseid'=>$model->ID]);
+            },
+            'headerOptions'=>['class'=>'kartik-sheet-style']
+            //'disabled'=>true,
+            //'detailUrl'=>Url::to(['/site/test-expand'])
+            ],
+            
+           'supplier.partnername',
+           'ordernumber',
+           'comment',
+            //'bundle_ID',
+                [
+			    'class' => 'yii\grid\ActionColumn',
+			    'template' => '{delete}',
+    		'buttons' => [
+    		'delete' => function ($url, $model, $key) {
+    			 /*return Html::a('<span class="glyphicons glyphicons-trash"></span>', ['productsupplier/delete', 'id' => $model->ID], [
+							'title' => Yii::t('yii', 'Inactivate'),
+							'data-confirm' => Yii::t('yii', 'Are you sure you want to disable the supplier entry?'),
+							'data-method' => 'post',
+							'data-pjax' => '0',
+							]);*/
+    			 return Html::a('<span class="glyphicon glyphicon-trash"></span>', ['productsupplier/delete', 'id' => $model->ID], [
+    			 		'title' => Yii::t('yii', 'Disable'),
+    			 		'data-confirm' => Yii::t('yii', 'Are you sure you want to disable the supplier entry?'),
+    			 		'data-method' => 'post',
+    			 		'data-pjax' => '0',
+    			 ]);
+    		},],
+    ],
+        ],
+    ]); ?>
+    
         <div class="row">
 <div class="col-lg-6">
     <?= GridView::widget([
@@ -196,28 +241,7 @@ $this->params['breadcrumbs'][] = $this->title;
         ],
     ]); ?>
     </div></div>
-        <?= GridView::widget([
-        'dataProvider' => $suppliers,
-        'panel' => [
-        		'type' => GridView::TYPE_PRIMARY,
-        		'heading' => Yii::t('sales', 'Suppliers'),
-        ],
-        'toolbar' => [
-        		['content'=>
-        				Html::button('<i class="glyphicon glyphicon-plus"></i>', ['type'=>'button', 'title'=>Yii::t('sales', 'Add Book'), 'class'=>'btn btn-success', 'onclick'=>'alert("This will launch the book creation form.\n\nDisabled for this demo!");']) . ' '.
-        				Html::a('<i class="glyphicon glyphicon-repeat"></i>', ['grid-demo'], ['data-pjax'=>0, 'class' => 'btn btn-default', 'title'=>Yii::t('sales', 'Reset Grid')])
-        		],
-        		'{export}',
-        		'{toggleData}',
-        ],
-        'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
 
-           'ID',
-            //'bundle_ID',
-            ['class' => 'yii\grid\ActionColumn'],
-        ],
-    ]); ?>
     
 </div>
 

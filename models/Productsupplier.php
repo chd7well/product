@@ -11,6 +11,7 @@ namespace chd7well\sales\models;
 
 use Yii;
 use yii\helpers\ArrayHelper;
+use chd7well\resource\models\Partner;
 /**
  * This is the model class for table "{{%sales_product_supplier}}".
  *
@@ -43,6 +44,7 @@ class Productsupplier extends \yii\db\ActiveRecord
         return [
             [['product_ID', 'supplier_ID'], 'required'],
             [['product_ID', 'supplier_ID'], 'integer'],
+        	[['active'], 'boolean'],
             [['ordernumber'], 'string', 'max' => 50],
             [['comment'], 'string', 'max' => 255]
         ];
@@ -58,6 +60,7 @@ class Productsupplier extends \yii\db\ActiveRecord
             'product_ID' => Yii::t('sales', 'Product  ID'),
             'supplier_ID' => Yii::t('sales', 'Supplier  ID'),
             'ordernumber' => Yii::t('sales', 'Ordernumber'),
+        		'active' => Yii::t('sales', 'Active'),
             'comment' => Yii::t('sales', 'Comment'),
         ];
     }
@@ -67,7 +70,7 @@ class Productsupplier extends \yii\db\ActiveRecord
      */
     public function getSalesProductPurchasePrices()
     {
-        return $this->hasMany(SalesProductPurchasePrice::className(), ['purchase_ID' => 'ID']);
+        return $this->hasMany(ProductPurchasePrice::className(), ['purchase_ID' => 'ID']);
     }
 
     /**
@@ -75,7 +78,7 @@ class Productsupplier extends \yii\db\ActiveRecord
      */
     public function getSupplier()
     {
-        return $this->hasOne(ResPartner::className(), ['ID' => 'supplier_ID']);
+        return $this->hasOne(Partner::className(), ['ID' => 'supplier_ID']);
     }
 
     /**
@@ -83,7 +86,7 @@ class Productsupplier extends \yii\db\ActiveRecord
      */
     public function getProduct()
     {
-        return $this->hasOne(SalesProduct::className(), ['ID' => 'product_ID']);
+        return $this->hasOne(Product::className(), ['ID' => 'product_ID']);
     }
     
     public function getSupplierList()

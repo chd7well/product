@@ -8,6 +8,7 @@ use chd7well\sales\models\ProductsupplierSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use chd7well\master\models\Modellog;
 
 /**
  * ProductsupplierController implements the CRUD actions for Productsupplier model.
@@ -33,8 +34,9 @@ class ProductsupplierController extends Controller
     public function actionIndex()
     {
         $searchModel = new ProductsupplierSearch();
+     	
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-
+	
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
@@ -72,6 +74,29 @@ class ProductsupplierController extends Controller
     }
 
     /**
+     * Creates a new Productsupplier model.
+     * If creation is successful, the browser will be redirected to the 'view' page.
+     * @return mixed
+     */
+    public function actionAdd($id)
+    {
+    	$model = new Productsupplier();
+    
+    	$model->product_ID = $id;
+    	$model->active = true;
+    	
+    	if ($model->load(Yii::$app->request->post()) && $model->save()) {
+    		Modellog::logAction($model->className(), $model->product_ID, \Yii::$app->user->identity->ID, Modellog::ACTION_CREATE, "Create product supplier " . $model->supplier->partnername);
+    		return $this->redirect(['productpurchaseprice/add', 'id' => $model->ID]);
+    	} else {
+    		return $this->render('add', [
+    				'model' => $model,
+    				'id'=>$id,
+    		]);
+    	}
+    }
+    
+    /**
      * Updates an existing Productsupplier model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
@@ -98,9 +123,11 @@ class ProductsupplierController extends Controller
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
-
-        return $this->redirect(['index']);
+        $model = $this->findModel($id);
+		$model->active = false;
+		$model->update('active');
+		Modellog::logAction($model->className(), $model->product_ID, \Yii::$app->user->identity->ID, Modellog::ACTION_DISABLED, "Disabled supplier " . $model->supplier->partnername . "with ordnerumber ". $model->ordernumber);
+        return $this->redirect(['product/view', 'id' => $model->product_ID]);
     }
 
     /**

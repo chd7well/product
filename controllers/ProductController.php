@@ -68,7 +68,7 @@ class ProductController extends Controller
     	$retailprices->orderBy(['fromdate' => SORT_DESC, 'ID'=> SORT_DESC]);
     	
     	$suppliers = Productsupplier::find();
-    	$suppliers->where(['product_ID'=>$model->ID]);
+    	$suppliers->where(['product_ID'=>$model->ID, 'active'=>true]);
     
     	if (\Yii::$app->request->post('hasEditable')) {
     		$out = Json::encode(['output'=>'', 'message'=>'']);
@@ -174,6 +174,7 @@ class ProductController extends Controller
     			Modellog::logAction($product->className(), $product->ID, \Yii::$app->user->identity->ID, Modellog::ACTION_CREATE, "Create product " . $model->productname);
     			
     			$supplier->product_ID = $product->ID;
+    			$supplier->active = true;
     			$supplier->save(false);
     			Modellog::logAction($supplier->className(), $product->ID, \Yii::$app->user->identity->ID, Modellog::ACTION_CREATE, "Create product supplier " . $supplier->supplier->partnername);
     			
@@ -195,7 +196,10 @@ class ProductController extends Controller
     			$rprice = new Productretailprice();
     			$rprice->product_ID = $product->ID;
     			$rprice->fromdate = date("Y-m-d",time());
-    			if($prices->retailprice == null || $prices->retailprice === "" || $prices->retailprice == 0)
+    			$prices->setRetailprice($product->productgrp->margin/100);
+    			$rprice->retailprice = $prices->retailprice;
+    			
+    			/*if($prices->retailprice == null || $prices->retailprice === "" || $prices->retailprice == 0)
     			{
     				if($prices->suggestedprice == null || $prices->suggestedprice === "" || $prices->suggestedprice == 0)
     				{
@@ -209,7 +213,7 @@ class ProductController extends Controller
     			else 
     			{
     				$prices->retailprice = $prices->retailprice;
-    			}
+    			}*/
     			$rprice->save(false);
     			Modellog::logAction($rprice->className(), $product->ID, \Yii::$app->user->identity->ID, Modellog::ACTION_CREATE, "Added retail price " . $rprice->retailprice);
     			

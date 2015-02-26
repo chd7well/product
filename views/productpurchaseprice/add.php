@@ -7,12 +7,14 @@ use kartik\money\MaskMoney;
 /* @var $this yii\web\View */
 /* @var $model chd7well\sales\models\Productsupplier */
 /* @var $form yii\widgets\ActiveForm */
+$this->title = Yii::t('sales', 'Add Purchase Price');
+$this->params['breadcrumbs'][] = $this->title;
 ?>
 
 <div class="productsupplier-form">
 
 
-
+ <?php $form = ActiveForm::begin(); ?>
 
     <?= $form->field($model, 'purchaseprice')->widget(MaskMoney::classname(), [
 'pluginOptions' => [
@@ -36,9 +38,7 @@ use kartik\money\MaskMoney;
 ]
 ]); ?>
                 
-                <?= Yii::t('sales', 'If you leaf retail price blank, the system will fill in the price automatically. (e.g. by the suggested price or by the purchase price additional product group marge)') . "<br>"?>
-                
-        <?= $form->field($model, 'retailprice')->widget(MaskMoney::classname(), [
+                        <?= $form->field($model, 'retailprice')->widget(MaskMoney::classname(), [
 'pluginOptions' => [
 'prefix' => '',
 'suffix' => ' €',
@@ -48,10 +48,13 @@ use kartik\money\MaskMoney;
 		'precision' => 2,
 ]
 ]); ?>
-        
-  <?= $form->field($model, 'comment')->textarea(['rows' => 2]) ?>
+                        
+                <?= $form->field($model, 'comment')->textarea(['rows' => 2]) ?>
+                
+    <div class="form-group">
+        <?= Html::submitButton(Yii::t('sales', 'Add Purchase Price'), ['class' => 'btn btn-success']) ?>
+    </div>
 
-
-
+    <?php ActiveForm::end(); ?>
 
 </div>

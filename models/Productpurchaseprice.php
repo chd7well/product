@@ -17,6 +17,7 @@ use Yii;
  * @property integer $ID
  * @property integer $purchase_ID
  * @property string $fromdate
+ * @property double $purchaseprice
  * @property double $suggested_retailprice
  * @property string $comment
  *
